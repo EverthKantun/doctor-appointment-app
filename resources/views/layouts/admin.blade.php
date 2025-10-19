@@ -1,3 +1,6 @@
+@props(['breadcrumbs' => []])
+
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -14,28 +17,27 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://kit.fontawesome.com/efb061e884.js" crossorigin="anonymous"></script>
-        
-        <!-- wireUI -->
-        <wireui:scripts />
 
         <!-- Styles -->
         @livewireStyles
     </head>
     <body class="font-sans antialiased bg-gray-50">
-        
-@include('layouts.includes.admin.navigation')
-@include('layouts.includes.admin.sidebar')
 
-<div class="p-4 sm:ml-64">
-    <!-- margin top 14 mp-->
-   <div class="mt-14">
-    {{$slot}}
-</div>
+        @include('layouts.includes.admin.navigation')
+        @include('layouts.includes.admin.sidebar')
 
+        <div class="p-4 sm:ml-64">
+            <div class="mt-14 flex items-center justify-between w-full">
+                @include('layouts.includes.admin.breadcrumb')
+            </div>
+            {{ $slot }}
+        </div>
 
         @stack('modals')
 
+        {{-- Scripts: el orden aquí es muy importante --}}
         @livewireScripts
+        <wireui:scripts />
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     </body>
 </html>
