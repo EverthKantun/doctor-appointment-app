@@ -1,6 +1,6 @@
 <x-admin-layout
     title="Roles | MediCare" 
-    :breadcrumb="[
+    :breadcrumbs="[
        [ 'name'=>'Dashboard',
         'route'=> route('admin.dashboard'),
         ],
