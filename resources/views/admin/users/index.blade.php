@@ -8,5 +8,5 @@
             <span class="ml-1">Nuevo</span>
         </x-wire-button>
     </x-slot>
-    </div>
+    @livewire(' admin.datatables.user-table')
 </x-admin-layout>
