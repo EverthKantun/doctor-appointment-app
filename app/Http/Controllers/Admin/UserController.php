@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $users = User::paginate(10);
@@ -81,9 +85,19 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete();
-
-        return redirect()->route('admin.users.index')
-                         ->with('swal', ['icon' => 'success', 'title' => 'Usuario eliminado']);
+    // Autorizar la acción usando la Policy
+    // Esto lanzará automáticamente un 403 si la policy retorna false
+    $this->authorize('delete', $user);
+    // No permitir que el usuario logueado se borre a sí mismo 
+    if (Auth::id()==$user->id){
+        abort(403,'No puees borrar tu propio usuario');
+    }
+        session()->flash('swal', 
+        [
+            'icon' => 'success',
+            'title' => 'Usuario eliminado correctamente',
+            'text' => 'El usuario ha sido eliminado exitosamente',
+        ]);
+        return redirect()->route('admin.users.index')->with('success', 'Usuario eliminado correctamente');
     }
 }
