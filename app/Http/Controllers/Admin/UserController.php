@@ -66,7 +66,7 @@ class UserController extends Controller
             'role_id' => 'required|exists:roles,id',
            ]);
     
-           $user=update($data);
+           $user->update($data);
            //Si el usuario quiere editar su contraseña, que lo guarde
            if ($request->has('password')) {
             $user->password = bcrypt($request->password);
