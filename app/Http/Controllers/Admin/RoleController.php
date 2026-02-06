@@ -43,6 +43,13 @@ class RoleController extends Controller
             'text' => 'El rol ha sido creado exitosamente'
         ]);
 
+        //si el usuario creado es usuario, enviar al módulo pacientes
+        if($user::role('Paciente')){
+            //creamos el registro de un paciente
+            $patient = $user->patient()->create([]);
+            return redirect()->route('admin.patients.edit', $patient);
+        }
+
         //redireccionar a la tabla principal
         return redirect()->route('admin.roles.index')->with('success', 'Role created successfully');
     }

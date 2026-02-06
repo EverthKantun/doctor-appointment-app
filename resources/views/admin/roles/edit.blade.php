@@ -1,33 +1,42 @@
 <x-admin-layout
-    title="Roles | MediCare" 
+    title="Roles | MediCare"
     :breadcrumbs="[
-       [ 'name'=>'Dashboard',
-        'href'=> route('admin.dashboard'),
+        [
+            'name' => 'Dashboard',
+            'href' => route('admin.dashboard'),
         ],
         [
-            'name'=>'Roles',
-            'href'=> route('admin.roles.index'),
+            'name' => 'Roles',
+            'href' => route('admin.roles.index'),
         ],
         [
-            'name' => 'Editar',
-],
-    ]">
+            'name' => 'Crear',
+        ],
+    ]"
+>
+    <x-wire-card title="Registrar Nuevo Rol">
 
-        <x-wire-card>
-        <form action="{{ route('admin.roles.update', $role) }}" method="POST">
+        <form action="{{ route('admin.roles.store') }}" method="POST">
             @csrf
-            @method('PUT')
-            <x-wire-input
-                label="Nombre"
-                name="name"
-                placeholder="Nombre del rol"
-                :value="old('name', $role->name)">
-                
-        </x-wire-input>
-        <div class="flex justify-end mt-4">
-            <x-wire-button type="submit" blue>Actualizar</x-wire-button>
-        </div>
-        </form>
-    </x-wire-card>
 
+            <div class="space-y-4">
+                <x-wire-input
+                    label="Nombre del rol"
+                    name="name"
+                    required
+                    :value="old('name')"
+                    placeholder="Ej. Administrador, Doctor, Recepcionista"
+                />
+
+                {{-- Si luego agregas permisos, aquí irían --}}
+            </div>
+
+            <div class="flex justify-end items-center gap-2 mt-6 pt-4 border-t border-gray-200">
+                <x-wire-button href="{{ route('admin.roles.index') }}" flat label="Cancelar" />
+                <x-wire-button type="submit" blue label="Guardar Rol" />
+            </div>
+
+        </form>
+
+    </x-wire-card>
 </x-admin-layout>
