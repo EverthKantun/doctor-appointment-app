@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Datatables;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
 class PatientTable extends DataTableComponent
@@ -13,7 +14,7 @@ class PatientTable extends DataTableComponent
 public function builder(): Builder
 {
     return Patient::query()
-        ->select('patients.*') // 🔑 CLAVE
+        ->select('patients.*') 
         ->with('user');
 }
 
@@ -31,21 +32,53 @@ public function columns(): array
             ->sortable(),
 
         Column::make("Nombre")
+                ->sortable(function(Builder $query, string $direction) {
+                    return $query->orderBy(
+                        User::select('name')
+                            ->whereColumn('users.id', 'patients.user_id')
+                            ->limit(1),
+                        $direction
+                    );
+                })
             ->label(function ($row) {
                 return $row->user?->name ?? 'N/A';
             }),
 
         Column::make("Email")
+                ->sortable(function(Builder $query, string $direction) {
+                    return $query->orderBy(
+                        User::select('email')
+                            ->whereColumn('users.id', 'patients.user_id')
+                            ->limit(1),
+                        $direction
+                    );
+                })
             ->label(function ($row) {
                 return $row->user?->email ?? 'N/A';
             }),
 
         Column::make("Número de id")
+                ->sortable(function(Builder $query, string $direction) {
+                    return $query->orderBy(
+                        User::select('id_number')
+                            ->whereColumn('users.id', 'patients.user_id')
+                            ->limit(1),
+                        $direction
+                    );
+                })
             ->label(function ($row) {
                 return $row->user?->id_number ?? 'N/A';
             }),
 
         Column::make("Teléfono")
+                ->sortable(function(Builder $query, string $direction) {
+                    return $query->orderBy(
+                        User::select('phone')
+                            ->whereColumn('users.id', 'patients.user_id')
+                            ->limit(1),
+                        $direction
+                    );
+                })
             ->label(function ($row) {
                 return $row->user?->phone ?? 'N/A';
             }),

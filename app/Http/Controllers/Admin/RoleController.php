@@ -8,25 +8,17 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         return view('admin.roles.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.roles.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //Validar 
@@ -43,28 +35,17 @@ class RoleController extends Controller
             'text' => 'El rol ha sido creado exitosamente'
         ]);
 
-        //si el usuario creado es usuario, enviar al módulo pacientes
-        if($user::role('Paciente')){
-            //creamos el registro de un paciente
-            $patient = $user->patient()->create([]);
-            return redirect()->route('admin.patients.edit', $patient);
-        }
-
         //redireccionar a la tabla principal
         return redirect()->route('admin.roles.index')->with('success', 'Role created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Role $role)
     {
         //Restringir la acción para los primeros 4 roles fijos
@@ -80,9 +61,6 @@ class RoleController extends Controller
         return view('admin.roles.edit', compact('role'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Role $role)
         {
         //Validar 
@@ -114,9 +92,6 @@ class RoleController extends Controller
         return redirect()->route('admin.roles.index', $role);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Role $role)
     {
         //Restringir la acción para los primeros 4 roles fijos
