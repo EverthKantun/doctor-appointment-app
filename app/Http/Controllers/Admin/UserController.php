@@ -47,11 +47,21 @@ class UserController extends Controller
         'text' => 'El usuario ha sido creado exitosamente',
        ]);
 
-         //si el usuario creado es usuario, enviar al módulo pacientes
+         //si el usuario creado es paciente, enviar al módulo pacientes
         if ($user->hasRole('Paciente')) {
             //creamos el registro de un paciente
             $patient = $user->patient()->create([]);
             return redirect()->route('admin.patients.edit', $patient);
+        }
+        // Crear perfil doctor automáticamente
+        if ($user->hasRole('Doctor')) {
+
+            $doctor = $user->doctor()->create([
+                'medical_license_number' => '',
+                'speciality_id' => null,
+                'biography' => null,
+            ]);
+            return redirect()->route('admin.doctors.edit', $doctor);
         }
 
        return redirect()->route('admin.users.index')->with('success', 'Usuario creado correctamente');

@@ -75,7 +75,7 @@ class PatientController extends Controller
             'text' => 'El paciente se actualizó correctamente',
         ]);
 
-        return redirect()->route('admin.patients.edit', $patient);
+        return redirect()->route('admin.patients.index', $patient);
     }
 
     /**
